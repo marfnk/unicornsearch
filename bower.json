@@ -1,0 +1,24 @@
+{
+  "name": "unicornsearch",
+  "version": "0.1.0",
+  "main": [
+    "unicornsearch.js",
+    "unicornsearch.tpl.html",
+    "unicornsearch.css"
+  ]
+  "authors": [
+    "Marius Fink <github@mariusfink.org>"
+  ],
+  "description": "An AngularJS and Bootstrap-CSS multisearch with a minimal code.",
+  "keywords": [
+    "angular",
+    "search",
+    "bootstrap"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ]
+}

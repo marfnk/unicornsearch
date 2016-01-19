@@ -1,0 +1,77 @@
+<div class="unicorn-search"
+  ng-class="{'input-group': showClearBtn}"
+  >
+
+  <div  class="unicorn-search__inner form-control"
+        ng-click="activateSearchField() "
+        click-out="closeResults()"
+        ng-class="{'unicorn-search__inner--focused': state.focused,
+                   'unicorn-search__inner--open': (state.open && results.length > 0)}">
+    
+    <ul class="unicorn-chips">
+      <li ng-repeat="chip in selectedItems " class='unicorn-chips__chip'>
+        {{chip.label}}
+        <button type="button " ng-click="removeItem(chip)" tabindex="-1">
+          &times;
+        </button>
+      </li>
+    </ul>
+
+    <div class="unicorn-search__input">
+       <i class="glyphicon"
+          ng-class="{
+            'glyphicon-refresh glyphicon-spin': state.loading,
+            'glyphicon-search': !state.loading
+          }"></i>
+       
+      <input  tabindex="0"
+              type="text"
+              size="{{search.length * 1.2}}"
+              class="unicorn-search__focusable"
+              placeholder="{{state.maximumReached ? 'maximum reached': ''}}"
+              onClick="this.select();"
+              ng-click="state.open=true"
+              ng-model="search"
+              ng-keydown="handleSpecialChars($event)"
+              ng-focus="state.open=true;state.focused=true"
+              ng-blur="setTouched();state.focused=false" />
+    </div>
+
+    <div class="unicorn-suggestions">
+      <span class="help-block" ng-if="state.nothingFound || state.tooLessLetters || state.loadingError">
+        <span ng-if="state.nothingFound" class="text-warning">Nothing found.</span>
+        <span ng-if="state.tooLessLetters" class="text-muted">Please enter more letters.</span>
+        <span ng-if="state.loadingError" class="text-danger"><i class="glyphicon glyphicon-warning-sign"></i> Could not fetch results.</span>
+      </span>
+      
+      <ul ng-if="state.open && results.length > 0">
+        <li class="unicorn-suggestions__headline">{{results.length}} result<span ng-if="results.length > 1">s</span></li>
+        <li ng-repeat="result in results" class="unicorn-suggestions__result">
+
+          <button type="button"
+                  class="unicorn-search__focusable"
+                  ng-click="selectItem(result)"
+                  ng-if="!isAlreadySelected(result)"
+                  tabindex="0"
+                  ng-keydown="handleSpecialChars($event)"
+                  onMouseOver="this.focus();">
+            {{result.label}}
+          </button>
+
+          <span class="unicorn-suggestions__result--already-selected" ng-if="isAlreadySelected(result)">
+             {{result.label}} 
+             is already selected
+           </span>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <span class="input-group-btn" ng-if="showClearBtn">
+    <button type="button" class="btn btn-danger unicorn-search__btn-append" ng-click="clear()">
+      <i class="glyphicon glyphicon-trash"></i>
+    </button>
+  </span>
+
+</div>
