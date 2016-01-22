@@ -84,6 +84,14 @@ body {
       .unicorn-search .unicorn-suggestions ul li.unicorn-suggestions__result .unicorn-suggestions__result--already-selected {
         color: #ccc; }
 
+.unicorn-search--disabled {
+  cursor: not-allowed; }
+  .unicorn-search--disabled .unicorn-search__inner {
+    background: #eee; }
+    .unicorn-search--disabled .unicorn-search__inner .unicorn-chips__chip {
+      color: #555;
+      padding: 1px 8px; }
+
 .glyphicon-spin {
   -webkit-animation: spin 1000ms infinite linear;
   animation: spin 1000ms infinite linear; }

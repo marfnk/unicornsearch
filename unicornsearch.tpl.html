@@ -1,29 +1,34 @@
 <div class="unicorn-search"
-  ng-class="{'input-group': showClearBtn}"
-  >
+  ng-class="{
+    'input-group': showClearBtn && !disabled,
+    'unicorn-search--disabled': disabled
+  }">
 
   <div  class="unicorn-search__inner form-control"
-        ng-click="activateSearchField() "
-        click-out="closeResults()"
+        ng-click="activateSearchField()"
         ng-class="{'unicorn-search__inner--focused': state.focused,
                    'unicorn-search__inner--open': (state.open && results.length > 0)}">
     
     <ul class="unicorn-chips">
-      <li ng-repeat="chip in selectedItems " class='unicorn-chips__chip'>
+      <li ng-repeat="chip in selectedItems" class='unicorn-chips__chip'>
         {{chip.label}}
-        <button type="button " ng-click="removeItem(chip)" tabindex="-1">
+        <button type="button"
+                ng-click="removeItem(chip)"
+                tabindex="-1"
+                ng-if="!disabled">
           &times;
         </button>
       </li>
     </ul>
 
-    <div class="unicorn-search__input">
+    <div class="unicorn-search__input" ng-if="!disabled">
        <i class="glyphicon"
           ng-class="{
             'glyphicon-refresh glyphicon-spin': state.loading,
             'glyphicon-search': !state.loading
           }"></i>
        
+      <!-- ngif creates a child scope - we have to set ng-model to $parent.search -->
       <input  tabindex="0"
               type="text"
               size="{{search.length * 1.2}}"
@@ -31,7 +36,7 @@
               placeholder="{{state.maximumReached ? 'maximum reached': ''}}"
               onClick="this.select();"
               ng-click="state.open=true"
-              ng-model="search"
+              ng-model="$parent.search"
               ng-keydown="handleSpecialChars($event)"
               ng-focus="state.open=true;state.focused=true"
               ng-blur="setTouched();state.focused=false" />
@@ -68,7 +73,7 @@
     </div>
   </div>
 
-  <span class="input-group-btn" ng-if="showClearBtn">
+  <span class="input-group-btn" ng-if="showClearBtn && !disabled">
     <button type="button" class="btn btn-danger unicorn-search__btn-append" ng-click="clear()">
       <i class="glyphicon glyphicon-trash"></i>
     </button>
