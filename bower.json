@@ -2,9 +2,8 @@
   "name": "unicornsearch",
   "version": "0.2.0",
   "main": [
-    "unicornsearch.js",
-    "unicornsearch.tpl.html",
-    "unicornsearch.css"
+    "dist/unicornsearch.js",
+    "dist/unicornsearch.css"
   ],
   "authors": [
     "Marius Fink <github@mariusfink.org>"
@@ -18,6 +17,10 @@
     "select",
     "bootstrap"
   ],
+  "dependencies": {
+    "angular": "1.3.15",
+    "angular-sanitize": "1.3.15"
+  },
   "license": "MIT",
   "ignore": [
     "**/.*",
