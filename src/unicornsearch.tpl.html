@@ -37,8 +37,8 @@
               ng-click="openResults();"
               ng-model="$parent.search"
               ng-keydown="handleKeyboardInput($event)"
-              ng-focus="openResults();state.focused=true"
-              ng-blur="setTouched();state.focused=false" />
+              ng-focus="requestTouched();openResults();state.focused=true"
+              ng-blur="state.focused=false" />
     </div>
 
     <div class="unicorn-suggestions">
