@@ -1,4 +1,4 @@
-(function () {
+(function() {
     angular
         .module('unicornsearchModule', ['ngSanitize']);
 
@@ -6,34 +6,38 @@
         .module('unicornsearchModule')
         .directive('unicornSearch', SearchDirective);
 
-    function SearchDirective($q, $timeout, $window) {
+    function SearchDirective($timeout, $window) {
 
         return {
             restrict: 'E',
             templateUrl: 'unicornsearch.tpl.html',
             require: 'ngModel',
-            replace: true,
             scope: {
-                load: '=',
-                delay: '=',
-                minChars: '=',
-                maxItems: '=',
-                showClearBtn: '=',
-                disabled: '@'
+                load: '=', //function that returns a promise ($q) with the results (required)
+                translations: '=', //translation object (optional)
+                config: '=', //configuration object (options)
+                required: '@', //wheather this component is required false when missing
+                disabled: '@', //wheather this component should be disabled false when missing
+                itemToKey: '=', //function to convert items to keys for comparision (optional)
+                itemToString: '=' // function to convert items into strings for presentation (optional)
             },
-            link: function ($scope, element, attrs, ngModel) {
+            link: function($scope, element, attrs, ngModel) {
                 var currentTimeout;
                 var searchField;
                 var touchedPending = false;
-                $timeout(function () {
+                $timeout(function() {
                     searchField = element.find('input')[0];
                 });
 
-                $scope.delay = $scope.delay || 400;
-                $scope.minChars = $scope.minChars || 3;
-                $scope.maxItems = $scope.maxItems;
+                //fallback config
+                $scope.config = $scope.config || {};
+                $scope.config.delay = $scope.config.delay || 400;
+                $scope.config.minChars = $scope.config.minChars || 3;
+                $scope.itemToKey = $scope.itemToKey || function(item) {return item.id;};
+                $scope.itemToString = $scope.itemToString || function(item) {return item.label;};
+                //scope setup
                 $scope.ngModel = ngModel;
-                $scope.selectedItems = ngModel.$viewValue;
+                $scope.selectedItems = ngModel.$viewValue || [];
                 $scope.selectItem = selectItem;
                 $scope.removeItem = removeItem;
                 $scope.isAlreadySelected = isAlreadySelected;
@@ -44,6 +48,7 @@
                 $scope.results = [];
                 $scope.requestTouched = requestTouched;
                 $scope.handleKeyboardInput = handleKeyboardInput;
+                $scope.getFirstSelectableItemFromResults = getFirstSelectableItemFromResults;
                 $scope.state = {
                     open: false,
                     loading: false,
@@ -54,7 +59,7 @@
                     maximumReached: false
                 };
 
-                $scope.$watch('search', function (searchTerm) {
+                $scope.$watch('search', function(searchTerm) {
                     if ($scope.state.maximumReached) {
                         $scope.search = '';
                         return;
@@ -62,51 +67,40 @@
                     resetResults();
 
                     if (searchTerm) {
-                        $scope.state.tooLessLetters = searchTerm.length < $scope.minChars;
-                        if (searchTerm.length >= $scope.minChars) {
+                        $scope.state.tooLessLetters = searchTerm.length < $scope.config.minChars;
+                        if (searchTerm.length >= $scope.config.minChars) {
                             if (currentTimeout) {
                                 $timeout.cancel(currentTimeout);
                                 currentTimeout = undefined;
                             }
-                            currentTimeout = $timeout(function () {
-                                startLoading();
+                            currentTimeout = $timeout(function() {
+                                $scope.state.loading = true;
                                 $scope.load(searchTerm)
                                     .then(addSearchResults, loadingError)
-                                    .then(stopLoading);
-                            }, $scope.delay);
+                                    .then(function() {
+                                        $scope.state.loading = false;
+                                    });
+                            }, $scope.config.delay);
                         }
                     }
                 });
 
-                $scope.$watchCollection('ngModel.$modelValue', function (n) {
+                $scope.$watchCollection('ngModel.$modelValue', function(n) {
+                    //initiailize
                     if (n !== $scope.selectedItems) {
                         $scope.selectedItems = n;
                     }
-                });
-
-                //sets the model to undefined if array is empty
-                $scope.$watchCollection('selectedItems', function (n) {
-                    if (angular.isArray(n) && n.length === 0) {
-                        ngModel.$setViewValue(undefined);
-                    } else {
-                        ngModel.$setViewValue($scope.selectedItems);
+                    //Validation
+                    if ($scope.required) {
+                        ngModel.$setValidity('required', ngModel.$modelValue.length !== 0);
+                    }
+                    //maximum
+                    $scope.state.maximumReached = $scope.selectedItems.length >= $scope.config.maxItems;
+                    if ($scope.state.maximumReached) {
+                        $scope.search = '';
+                        resetResults();
                     }
                 });
-
-                //observe maximum input
-                $scope.$watch('selectedItems.length', function (length) {
-                    if (typeof $scope.selectedItems === 'undefined') {
-                        $scope.state.maximumReached = false;
-                    } else {
-                        $scope.state.maximumReached = $scope.selectedItems.length >= $scope.maxItems;
-                        if ($scope.state.maximumReached) {
-                            $scope.search = '';
-                            resetResults();
-                        }
-                    }
-                });
-
-                $window.addEventListener('focus', onFocusOutside, true);
 
                 function addSearchResults(results) {
                     $scope.results = results;
@@ -116,15 +110,7 @@
 
                 function loadingError(err) {
                     $scope.state.loadingError = true;
-                    stopLoading();
-                }
-
-                function stopLoading() {
                     $scope.state.loading = false;
-                }
-
-                function startLoading() {
-                    $scope.state.loading = true;
                 }
 
                 function selectItem(item) {
@@ -141,11 +127,22 @@
                 }
 
                 function isAlreadySelected(item) {
-                    return $scope.selectedItems && $scope.selectedItems.indexOf(item) !== -1;
+                    if (!$scope.selectedItems) {
+                        return false;
+                    }
+                    for (var i = 0; i < $scope.selectedItems.length; ++i) {
+                        if ($scope.itemToKey($scope.selectedItems[i]) === $scope.itemToKey(item)) {
+                            return true;
+                        }
+                    }
+                    return false;
                 }
 
                 function activateSearchField() {
                     if (!$scope.disabled) {
+                        if (ngModel.$untouched) {
+                            $window.addEventListener('focus', onClickOrFocusOutside, true);
+                        }
                         searchField.focus();
                         searchField.select();
                     }
@@ -153,14 +150,14 @@
 
                 function openResults() {
                     $scope.state.open = true;
-                    $window.addEventListener("click", onClickOutside);
+                    $window.addEventListener("click", onClickOrFocusOutside);
                 }
 
                 function closeResults() {
-                    $timeout(function () {
+                    $timeout(function() {
                         $scope.state.open = false;
                     });
-                    $window.removeEventListener("click", onClickOutside);
+                    $window.removeEventListener("click", onClickOrFocusOutside);
                 }
 
                 function resetResults() {
@@ -171,7 +168,7 @@
                 }
 
                 function clear() {
-                    $scope.selectedItems = [];
+                    ngModel.$setViewValue([]);
                     $scope.results = [];
                     $scope.search = '';
                     activateSearchField();
@@ -181,23 +178,18 @@
                     touchedPending = true;
                 }
 
-                function onClickOutside(event) {
-                    if (element[0].contains(event.target)) return;
+                function onClickOrFocusOutside(event) {
+                    if (!(event.target instanceof Node) || element[0].contains(event.target)) return;
                     closeResults();
-                    $scope.$apply();
-                    setTouchedIfPending();
-                }
-
-                function onFocusOutside(event) {
-                    if (element[0].contains(event.target)) return;
+                    if (!$scope.$$phase) $scope.$apply();
                     setTouchedIfPending();
                 }
 
                 function setTouchedIfPending() {
                     if (touchedPending) {
                         ngModel.$setTouched();
-                        $scope.$apply();
-                        $window.removeEventListener("focus", onFocusOutside);
+                        if (!$scope.$$phase) $scope.$apply();
+                        $window.removeEventListener("focus", onClickOrFocusOutside);
                     }
                 }
 
@@ -222,24 +214,26 @@
                     if (pressed === down || pressed === up) {
                         var selectables = element[0].querySelectorAll('.unicorn-search__focusable');
                         openResults();
-                        $timeout(function () {
+                        $timeout(function() {
                             var index = [].indexOf.call(selectables, event.target);
                             var nextIndex = (pressed === down) ? (index + 1) : (index - 1);
-                            var nextElement = selectables[Math.min(selectables.length, nextIndex)];
-                            if (nextElement) {
-                                nextElement.focus();
-                            } //else focus first element?
+                            if (nextIndex >= selectables.length || nextIndex < 0) {
+                                nextIndex = (pressed === down) ? 0 : (selectables.length - 1);
+                            }
+                            selectables[nextIndex].focus();
                         });
                         event.preventDefault();
+
                     } else if (pressed === backspace) {
-                        var inputIsEmpty = (!$scope.search || $scope.search.length === 0);
-                        if (inputIsEmpty) {
+                        if (searchField.selectionStart === 0 && searchField.selectionEnd === 0) {
                             $scope.selectedItems.pop();
                             event.preventDefault();
                         }
+
                     } else if (pressed === esc) {
                         activateSearchField();
                         closeResults();
+
                     } else if (pressed === enter && event.currentTarget === searchField) {
                         event.preventDefault();
                         var firstSelectableItem = getFirstSelectableItemFromResults();

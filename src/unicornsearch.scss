@@ -1,40 +1,44 @@
-body {
-  padding: 50px;
-}
+//excerpt from bootstrap variables
+$input-height-base: 34px !default;
+$input-border-radius: 4px !default;
+$input-border-focus: #66afe9 !default;
+$focus-box-shadow: 0 0 8px rgba($input-border-focus,.6) !default;
+$btn-default-border: #ccc !default;
+$input-border: #ccc !default;
+$btn-default-bg: #fff !default;
+$brand-danger: #d9534f !default;
+$input-bg: #fff !default;
+$input-bg-disabled: #eee !default;
+$gray: #555 !default;
+$unicorn-search-remove-btn-size: 22px;
 
-//TODO use bootstrap vars when ready
 
 .unicorn-search {
-  width: 100%;
+  min-width: 300px;
   position: relative;
-  
+
   .unicorn-search__inner--focused {
-    //use bootstrat mixin: @include form-control-focus
-    border-color: rgba(82,168,236,.8);
+    border-color: $input-border-focus;
     outline: none;
-    -webkit-box-shadow: 0 0 8px rgba(82,168,236,.6);
-    box-shadow: 0 0 8px rgba(82,168,236,.6);
+    -webkit-box-shadow: $focus-box-shadow;
+    box-shadow: $focus-box-shadow;
   }
-  
-  .unicorn-search__btn-append {
-    
-  }
-  
+
   .unicorn-search__inner {
     height: auto;
     cursor: text;
     padding: 2px;
     z-index: 3;
-    
+
     &.unicorn-search__inner--open {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
-  
+
     .unicorn-search__input {
       display: inline-block;
       margin-left: 6px;
-      line-height: 26px;
+      line-height: $input-height-base - (2 * 3.75px);
       input {
         min-width: 80px;
         border: none;
@@ -43,82 +47,79 @@ body {
         }
       }
     }
-    
+
     .unicorn-chips {
       list-style: none;
       padding: 0;
       margin: 0;
       display: inline;
-      border-radius: 0;
-      
+
       .unicorn-chips__chip {
         display: inline-block;
         padding-left: 8px;
         margin: 2px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+        border: 1px solid $btn-default-border;
+        border-radius: $input-border-radius;
         height: 100%;
         position: relative;
-        background: #eee;
-        
+        background: $btn-default-bg;
+
         button {
           border: none;
           display: inline;
           background: none;
-          width: 22px;
+          width: $unicorn-search-remove-btn-size;
+          line-height: $unicorn-search-remove-btn-size;
           height: 100%;
           padding: 0;
           margin: 0;
-          line-height: 22px;
-          
+
           &:hover, &:focus {
-            color: red;
+            color: $brand-danger;
           }
         }
-      }  
+      }
     }
   }
-  
+
   .unicorn-suggestions {
     position: absolute;
     z-index: 3;
-    left: 0px;
+    left: 0;
     right: 0;
-    
+
     ul {
       list-style: none;
-      padding: 10px;
+      padding: 0;
       margin: 0;
       max-height: 300px;
-      min-width: 200px;
+      width: 100%;
       overflow: auto;
-      border: 1px solid #ccc; //bootstrap var
+      border: 1px solid $input-border;
       border-top: none;
-      border-bottom-left-radius: 4px; //bootstrap var
-      border-bottom-right-radius: 4px; //bootstrap var
-      background: #fff;
-      //box-shadow: 2px 2px 2px 0px rgba(99,99,99,0.5);
-      
+      border-bottom-left-radius: $input-border-radius;
+      border-bottom-right-radius: $input-border-radius;
+      background: $input-bg;
+
       li.unicorn-suggestions__headline {
         padding: 2px 5px;
-        border-bottom: 1px solid rgb(238, 238, 238);
-        font-weight: bold;
+        border-bottom: 1px solid $input-border;
       }
-      
+
       li.unicorn-suggestions__result {
-        
         button, span {
           width: 100%;
           background: none;
           border: none;
           text-align: left;
+          display: block;
           padding: 5px 6px;
         }
-        
-        button:hover, button:focus {
+
+        button.active {
           background: #ccc;
         }
-        
+
         .unicorn-suggestions__result--already-selected {
           color: #ccc;
         }
@@ -130,38 +131,37 @@ body {
 .unicorn-search--disabled {
   cursor: not-allowed;
   .unicorn-search__inner {
-    background: #eee;
+    min-height: $input-height-base;
+    background: $input-bg-disabled;
     .unicorn-chips__chip {
-      color: #555;
+      color: $gray;
       padding: 1px 8px;
     }
   }
 }
 
-
-
 //spining glyphicons
 .glyphicon-spin {
-    -webkit-animation: spin 1000ms infinite linear;
-    animation: spin 1000ms infinite linear;
+  -webkit-animation: spin 1000ms infinite linear;
+  animation: spin 1000ms infinite linear;
 }
 @-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(359deg);
-        transform: rotate(359deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
 }
 @keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(359deg);
-        transform: rotate(359deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
 }

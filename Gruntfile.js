@@ -46,8 +46,8 @@ module.exports = function (grunt) {
 		return grunt.task.run([
 			'clean',
 			'copy:dist',
-			//'compass:dist',
-			'ngtemplates'
+			'ngtemplates',
+			'compass:dist'
 		]);
 	});
 

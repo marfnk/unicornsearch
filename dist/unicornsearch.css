@@ -1,0 +1,157 @@
+/* line 16, ../src/unicornsearch.scss */
+.unicorn-search {
+  min-width: 300px;
+  position: relative;
+}
+/* line 20, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-search__inner--focused {
+  border-color: #66afe9;
+  outline: none;
+  -webkit-box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+}
+/* line 27, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-search__inner {
+  height: auto;
+  cursor: text;
+  padding: 2px;
+  z-index: 3;
+}
+/* line 33, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-search__inner.unicorn-search__inner--open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+/* line 38, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-search__inner .unicorn-search__input {
+  display: inline-block;
+  margin-left: 6px;
+  line-height: 26.5px;
+}
+/* line 42, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-search__inner .unicorn-search__input input {
+  min-width: 80px;
+  border: none;
+}
+/* line 45, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-search__inner .unicorn-search__input input:focus {
+  outline: none;
+}
+/* line 51, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-search__inner .unicorn-chips {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: inline;
+}
+/* line 57, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-search__inner .unicorn-chips .unicorn-chips__chip {
+  display: inline-block;
+  padding-left: 8px;
+  margin: 2px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 100%;
+  position: relative;
+  background: #fff;
+}
+/* line 67, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-search__inner .unicorn-chips .unicorn-chips__chip button {
+  border: none;
+  display: inline;
+  background: none;
+  width: 22px;
+  line-height: 22px;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+/* line 77, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-search__inner .unicorn-chips .unicorn-chips__chip button:hover, .unicorn-search .unicorn-search__inner .unicorn-chips .unicorn-chips__chip button:focus {
+  color: #d9534f;
+}
+/* line 85, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-suggestions {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+}
+/* line 91, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-suggestions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 300px;
+  width: 100%;
+  overflow: auto;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  background: #fff;
+}
+/* line 104, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-suggestions ul li.unicorn-suggestions__headline {
+  padding: 2px 5px;
+  border-bottom: 1px solid #ccc;
+}
+/* line 110, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-suggestions ul li.unicorn-suggestions__result button, .unicorn-search .unicorn-suggestions ul li.unicorn-suggestions__result span {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  display: block;
+  padding: 5px 6px;
+}
+/* line 119, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-suggestions ul li.unicorn-suggestions__result button.active {
+  background: #ccc;
+}
+/* line 123, ../src/unicornsearch.scss */
+.unicorn-search .unicorn-suggestions ul li.unicorn-suggestions__result .unicorn-suggestions__result--already-selected {
+  color: #ccc;
+}
+
+/* line 131, ../src/unicornsearch.scss */
+.unicorn-search--disabled {
+  cursor: not-allowed;
+}
+/* line 133, ../src/unicornsearch.scss */
+.unicorn-search--disabled .unicorn-search__inner {
+  min-height: 34px;
+  background: #eee;
+}
+/* line 136, ../src/unicornsearch.scss */
+.unicorn-search--disabled .unicorn-search__inner .unicorn-chips__chip {
+  color: #555;
+  padding: 1px 8px;
+}
+
+/* line 144, ../src/unicornsearch.scss */
+.glyphicon-spin {
+  -webkit-animation: spin 1000ms infinite linear;
+  animation: spin 1000ms infinite linear;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}

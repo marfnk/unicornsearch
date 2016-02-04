@@ -1,6 +1,6 @@
 <div class="unicorn-search"
      ng-class="{
-    'input-group': showClearBtn && !disabled,
+    'input-group': config.showClearBtn && !disabled,
     'unicorn-search--disabled': disabled
   }">
 
@@ -11,7 +11,7 @@
 
     <ul class="unicorn-chips">
       <li ng-repeat="chip in selectedItems" class='unicorn-chips__chip'>
-        {{chip.label}}
+        {{itemToString(chip)}}
         <button type="button"
                 ng-click="removeItem(chip)"
                 tabindex="-1"
@@ -33,7 +33,7 @@
               type="text"
               size="{{search.length * 1.2}}"
               class="unicorn-search__focusable"
-              placeholder="{{state.maximumReached ? 'maximum reached': ''}}"
+              placeholder="{{state.maximumReached ? (translations.maximumReached || 'maximum reached'): ''}}"
               ng-click="openResults();"
               ng-model="$parent.search"
               ng-keydown="handleKeyboardInput($event)"
@@ -42,14 +42,13 @@
     </div>
 
     <div class="unicorn-suggestions">
-      <span class="help-block" ng-if="state.nothingFound || state.tooLessLetters || state.loadingError">
-        <span ng-if="state.nothingFound" class="text-warning">Nothing found.</span>
-        <span ng-if="state.tooLessLetters" class="text-muted">Please enter more letters.</span>
-        <span ng-if="state.loadingError" class="text-danger"><i class="glyphicon glyphicon-warning-sign"></i> Could not fetch results.</span>
-      </span>
-
       <ul ng-if="state.open && results.length > 0">
-        <li class="unicorn-suggestions__headline">{{results.length}} result<span ng-if="results.length > 1">s</span></li>
+        <li class="unicorn-suggestions__headline">
+          <strong>
+            {{results.length}}
+            {{results.length > 1 ? translations.resultPlural || 'results' : translations.resultSingular || 'result'}}
+          </strong>
+        </li>
         <li ng-repeat="result in results" class="unicorn-suggestions__result">
 
           <button type="button"
@@ -58,13 +57,16 @@
                   ng-if="!isAlreadySelected(result)"
                   tabindex="0"
                   ng-keydown="handleKeyboardInput($event)"
-                  onMouseOver="this.focus();">
-            {{result.label}}
+                  onMouseOver="this.focus()"
+                  ng-focus="focussedResult=result"
+                  ng-blur="focussedResult=undefined"
+                  ng-class="{'active': (state.focused && getFirstSelectableItemFromResults() === result) || focussedResult === result}">
+            {{itemToString(result)}}
           </button>
 
           <span class="unicorn-suggestions__result--already-selected" ng-if="isAlreadySelected(result)">
-             {{result.label}} 
-             is already selected
+             {{itemToString(result)}}
+             {{translations.alreadySelected || 'is already selected'}}
            </span>
 
         </li>
@@ -72,10 +74,15 @@
     </div>
   </div>
 
-  <span class="input-group-btn" ng-if="showClearBtn && !disabled">
+  <span class="input-group-btn" ng-if="config.showClearBtn && !disabled">
     <button type="button" class="btn btn-danger unicorn-search__btn-append" ng-click="clear()">
       <i class="glyphicon glyphicon-trash"></i>
     </button>
   </span>
-
 </div>
+
+<span class="help-block unicorn-hints" ng-if="state.nothingFound || state.tooLessLetters || state.loadingError">
+  <span ng-if="state.nothingFound" class="unicorn-hints__hint text-warning">{{translations.nothingFound || 'Nothing found.'}}</span>
+  <span ng-if="state.tooLessLetters" class="unicorn-hints__hint text-muted">{{translations.tooLessChars || 'Search term too short.'}}</span>
+  <span ng-if="state.loadingError" class="unicorn-hints__hint text-danger">{{translations.errorFetchingResults || 'Could not fetch results.'}}</span>
+</span>
