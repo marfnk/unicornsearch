@@ -1,12 +1,12 @@
 {
   "name": "unicornsearch",
-  "version": "0.2.0",
+  "version": "1.0.1",
   "main": [
     "dist/unicornsearch.js",
     "dist/unicornsearch.css"
   ],
   "authors": [
-    "Marius Fink <github@mariusfink.org>"
+    "Marius Fink <marius.fink@holisticon.de>"
   ],
   "description": "An AngularJS and Bootstrap-CSS multisearch with a minimal code.",
   "keywords": [

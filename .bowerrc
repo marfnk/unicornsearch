@@ -1,0 +1,6 @@
+{
+	"directory": "bower_components",
+	"shorthand-resolver": "git@reflex-gitlab.hannover-re.com:{{owner}}/{{package}}.git",
+	"registry": "https://reflex-bower.hannover-re.com:8443",
+	"strict-ssl": false
+}
