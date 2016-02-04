@@ -54,8 +54,9 @@
   height: 100%;
   position: relative;
   background: #fff;
+  color: #333;
 }
-/* line 67, ../src/unicornsearch.scss */
+/* line 68, ../src/unicornsearch.scss */
 .unicorn-search .unicorn-search__inner .unicorn-chips .unicorn-chips__chip button {
   border: none;
   display: inline;
@@ -66,18 +67,18 @@
   padding: 0;
   margin: 0;
 }
-/* line 77, ../src/unicornsearch.scss */
+/* line 78, ../src/unicornsearch.scss */
 .unicorn-search .unicorn-search__inner .unicorn-chips .unicorn-chips__chip button:hover, .unicorn-search .unicorn-search__inner .unicorn-chips .unicorn-chips__chip button:focus {
   color: #d9534f;
 }
-/* line 85, ../src/unicornsearch.scss */
+/* line 86, ../src/unicornsearch.scss */
 .unicorn-search .unicorn-suggestions {
   position: absolute;
   z-index: 3;
   left: 0;
   right: 0;
 }
-/* line 91, ../src/unicornsearch.scss */
+/* line 92, ../src/unicornsearch.scss */
 .unicorn-search .unicorn-suggestions ul {
   list-style: none;
   padding: 0;
@@ -91,12 +92,12 @@
   border-bottom-right-radius: 4px;
   background: #fff;
 }
-/* line 104, ../src/unicornsearch.scss */
+/* line 105, ../src/unicornsearch.scss */
 .unicorn-search .unicorn-suggestions ul li.unicorn-suggestions__headline {
   padding: 2px 5px;
   border-bottom: 1px solid #ccc;
 }
-/* line 110, ../src/unicornsearch.scss */
+/* line 111, ../src/unicornsearch.scss */
 .unicorn-search .unicorn-suggestions ul li.unicorn-suggestions__result button, .unicorn-search .unicorn-suggestions ul li.unicorn-suggestions__result span {
   width: 100%;
   background: none;
@@ -105,31 +106,31 @@
   display: block;
   padding: 5px 6px;
 }
-/* line 119, ../src/unicornsearch.scss */
+/* line 120, ../src/unicornsearch.scss */
 .unicorn-search .unicorn-suggestions ul li.unicorn-suggestions__result button.active {
   background: #ccc;
 }
-/* line 123, ../src/unicornsearch.scss */
+/* line 124, ../src/unicornsearch.scss */
 .unicorn-search .unicorn-suggestions ul li.unicorn-suggestions__result .unicorn-suggestions__result--already-selected {
   color: #ccc;
 }
 
-/* line 131, ../src/unicornsearch.scss */
+/* line 132, ../src/unicornsearch.scss */
 .unicorn-search--disabled {
   cursor: not-allowed;
 }
-/* line 133, ../src/unicornsearch.scss */
+/* line 134, ../src/unicornsearch.scss */
 .unicorn-search--disabled .unicorn-search__inner {
   min-height: 34px;
   background: #eee;
 }
-/* line 136, ../src/unicornsearch.scss */
+/* line 137, ../src/unicornsearch.scss */
 .unicorn-search--disabled .unicorn-search__inner .unicorn-chips__chip {
   color: #555;
   padding: 1px 8px;
 }
 
-/* line 144, ../src/unicornsearch.scss */
+/* line 145, ../src/unicornsearch.scss */
 .glyphicon-spin {
   -webkit-animation: spin 1000ms infinite linear;
   animation: spin 1000ms infinite linear;

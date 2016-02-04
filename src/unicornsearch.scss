@@ -11,7 +11,7 @@ $input-bg: #fff !default;
 $input-bg-disabled: #eee !default;
 $gray: #555 !default;
 $unicorn-search-remove-btn-size: 22px;
-
+$btn-default-color: #333 !default;
 
 .unicorn-search {
   min-width: 300px;
@@ -63,6 +63,7 @@ $unicorn-search-remove-btn-size: 22px;
         height: 100%;
         position: relative;
         background: $btn-default-bg;
+        color: $btn-default-color;
 
         button {
           border: none;
