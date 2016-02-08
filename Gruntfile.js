@@ -39,6 +39,16 @@ module.exports = function (grunt) {
 					htmlmin: {collapseWhitespace: true}
 				}
 			}
+		},
+
+		release: {
+			options: {
+				npm: false, //default: true
+				npmtag: false, //default: no tag
+				indentation: '\t', //default: '  ' (two spaces)
+				tagName: 'v<%= version %>', //default: '<%= version %>'
+				file: 'bower.json'
+			}
 		}
 	});
 
