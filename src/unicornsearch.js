@@ -37,9 +37,10 @@
                 $scope.itemToString = $scope.itemToString || function(item) {return item.label;};
                 //scope setup
                 $scope.ngModel = ngModel;
-                $scope.selectedItems = ngModel.$viewValue || [];
+                $scope.selectedItems = ngModel.$modelValue || [];
                 $scope.selectItem = selectItem;
                 $scope.removeItem = removeItem;
+                $scope.calculateInputSize = calculateInputSize;
                 $scope.isAlreadySelected = isAlreadySelected;
                 $scope.activateSearchField = activateSearchField;
                 $scope.closeResults = closeResults;
@@ -178,17 +179,25 @@
                     touchedPending = true;
                 }
 
+                function calculateInputSize() {
+                    if ($scope.state.maximumReached) {
+                        return ($scope.translations.maximumReached || 'maximum reached').length * 1.2;
+                    } else {
+                        return $scope.search ? $scope.search.length * 1.2 : 10;
+                    }
+                }
+
                 function onClickOrFocusOutside(event) {
                     if (!(event.target instanceof Node) || element[0].contains(event.target)) return;
                     closeResults();
-                    if (!$scope.$$phase) $scope.$apply();
+                    if (!$scope.$$phase && !$scope.$root.$$phase) { $scope.$apply(); } //safe apply
                     setTouchedIfPending();
                 }
 
                 function setTouchedIfPending() {
                     if (touchedPending) {
                         ngModel.$setTouched();
-                        if (!$scope.$$phase) $scope.$apply();
+                        if (!$scope.$$phase && !$scope.$root.$$phase) { $scope.$apply(); } //safe apply
                         $window.removeEventListener("focus", onClickOrFocusOutside);
                     }
                 }

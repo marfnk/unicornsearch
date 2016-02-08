@@ -24,6 +24,10 @@ $btn-default-color: #333 !default;
     box-shadow: $focus-box-shadow;
   }
 
+  &.unicorn-search--active {
+    z-index: 4;
+  }
+
   .unicorn-search__inner {
     height: auto;
     cursor: text;

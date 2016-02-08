@@ -1,8 +1,9 @@
 <div class="unicorn-search"
      ng-class="{
-    'input-group': config.showClearBtn && !disabled,
-    'unicorn-search--disabled': disabled
-  }">
+      'input-group': config.showClearBtn && !disabled,
+      'unicorn-search--disabled': disabled,
+      'unicorn-search--active': state.focused || (state.open && results.length > 0)
+    }">
 
   <div  class="unicorn-search__inner form-control"
         ng-click="activateSearchField()"
@@ -31,7 +32,7 @@
       <!-- ngif creates a child scope - we have to set ng-model to $parent.search -->
       <input  tabindex="0"
               type="text"
-              size="{{search.length * 1.2}}"
+              size="{{calculateInputSize()}}"
               class="unicorn-search__focusable"
               placeholder="{{state.maximumReached ? (translations.maximumReached || 'maximum reached'): ''}}"
               ng-click="openResults();"

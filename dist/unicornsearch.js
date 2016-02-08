@@ -37,9 +37,10 @@
                 $scope.itemToString = $scope.itemToString || function(item) {return item.label;};
                 //scope setup
                 $scope.ngModel = ngModel;
-                $scope.selectedItems = ngModel.$viewValue || [];
+                $scope.selectedItems = ngModel.$modelValue || [];
                 $scope.selectItem = selectItem;
                 $scope.removeItem = removeItem;
+                $scope.calculateInputSize = calculateInputSize;
                 $scope.isAlreadySelected = isAlreadySelected;
                 $scope.activateSearchField = activateSearchField;
                 $scope.closeResults = closeResults;
@@ -178,17 +179,25 @@
                     touchedPending = true;
                 }
 
+                function calculateInputSize() {
+                    if ($scope.state.maximumReached) {
+                        return ($scope.translations.maximumReached || 'maximum reached').length * 1.2;
+                    } else {
+                        return $scope.search ? $scope.search.length * 1.2 : 10;
+                    }
+                }
+
                 function onClickOrFocusOutside(event) {
                     if (!(event.target instanceof Node) || element[0].contains(event.target)) return;
                     closeResults();
-                    if (!$scope.$$phase) $scope.$apply();
+                    if (!$scope.$$phase && !$scope.$root.$$phase) { $scope.$apply(); } //safe apply
                     setTouchedIfPending();
                 }
 
                 function setTouchedIfPending() {
                     if (touchedPending) {
                         ngModel.$setTouched();
-                        if (!$scope.$$phase) $scope.$apply();
+                        if (!$scope.$$phase && !$scope.$root.$$phase) { $scope.$apply(); } //safe apply
                         $window.removeEventListener("focus", onClickOrFocusOutside);
                     }
                 }
@@ -251,13 +260,14 @@
 
   $templateCache.put('unicornsearch.tpl.html',
     "<div class=\"unicorn-search\" ng-class=\"{\n" +
-    "    'input-group': config.showClearBtn && !disabled,\n" +
-    "    'unicorn-search--disabled': disabled\n" +
-    "  }\"><div class=\"unicorn-search__inner form-control\" ng-click=\"activateSearchField()\" ng-class=\"{'unicorn-search__inner--focused': state.focused,\n" +
+    "      'input-group': config.showClearBtn && !disabled,\n" +
+    "      'unicorn-search--disabled': disabled,\n" +
+    "      'unicorn-search--active': state.focused || (state.open && results.length > 0)\n" +
+    "    }\"><div class=\"unicorn-search__inner form-control\" ng-click=\"activateSearchField()\" ng-class=\"{'unicorn-search__inner--focused': state.focused,\n" +
     "                   'unicorn-search__inner--open': (state.open && results.length > 0)}\"><ul class=\"unicorn-chips\"><li ng-repeat=\"chip in selectedItems\" class=\"unicorn-chips__chip\">{{itemToString(chip)}} <button type=\"button\" ng-click=\"removeItem(chip)\" tabindex=\"-1\" ng-if=\"!disabled\">&times;</button></li></ul><div class=\"unicorn-search__input\" ng-if=\"!disabled\"><i class=\"glyphicon\" ng-class=\"{\n" +
     "            'glyphicon-refresh glyphicon-spin': state.loading,\n" +
     "            'glyphicon-search': !state.loading\n" +
-    "          }\"></i><!-- ngif creates a child scope - we have to set ng-model to $parent.search --> <input tabindex=\"0\" type=\"text\" size=\"{{search.length * 1.2}}\" class=\"unicorn-search__focusable\" placeholder=\"{{state.maximumReached ? (translations.maximumReached || 'maximum reached'): ''}}\" ng-click=\"openResults();\" ng-model=\"$parent.search\" ng-keydown=\"handleKeyboardInput($event)\" ng-focus=\"requestTouched();openResults();state.focused=true\" ng-blur=\"state.focused=false\"></div><div class=\"unicorn-suggestions\"><ul ng-if=\"state.open && results.length > 0\"><li class=\"unicorn-suggestions__headline\"><strong>{{results.length}} {{results.length > 1 ? translations.resultPlural || 'results' : translations.resultSingular || 'result'}}</strong></li><li ng-repeat=\"result in results\" class=\"unicorn-suggestions__result\"><button type=\"button\" class=\"unicorn-search__focusable\" ng-click=\"selectItem(result)\" ng-if=\"!isAlreadySelected(result)\" tabindex=\"0\" ng-keydown=\"handleKeyboardInput($event)\" onmouseover=\"this.focus()\" ng-focus=\"focussedResult=result\" ng-blur=\"focussedResult=undefined\" ng-class=\"{'active': (state.focused && getFirstSelectableItemFromResults() === result) || focussedResult === result}\">{{itemToString(result)}}</button> <span class=\"unicorn-suggestions__result--already-selected\" ng-if=\"isAlreadySelected(result)\">{{itemToString(result)}} {{translations.alreadySelected || 'is already selected'}}</span></li></ul></div></div><span class=\"input-group-btn\" ng-if=\"config.showClearBtn && !disabled\"><button type=\"button\" class=\"btn btn-danger unicorn-search__btn-append\" ng-click=\"clear()\"><i class=\"glyphicon glyphicon-trash\"></i></button></span></div><span class=\"help-block unicorn-hints\" ng-if=\"state.nothingFound || state.tooLessLetters || state.loadingError\"><span ng-if=\"state.nothingFound\" class=\"unicorn-hints__hint text-warning\">{{translations.nothingFound || 'Nothing found.'}}</span> <span ng-if=\"state.tooLessLetters\" class=\"unicorn-hints__hint text-muted\">{{translations.tooLessChars || 'Search term too short.'}}</span> <span ng-if=\"state.loadingError\" class=\"unicorn-hints__hint text-danger\">{{translations.errorFetchingResults || 'Could not fetch results.'}}</span></span>"
+    "          }\"></i><!-- ngif creates a child scope - we have to set ng-model to $parent.search --> <input tabindex=\"0\" type=\"text\" size=\"{{calculateInputSize()}}\" class=\"unicorn-search__focusable\" placeholder=\"{{state.maximumReached ? (translations.maximumReached || 'maximum reached'): ''}}\" ng-click=\"openResults();\" ng-model=\"$parent.search\" ng-keydown=\"handleKeyboardInput($event)\" ng-focus=\"requestTouched();openResults();state.focused=true\" ng-blur=\"state.focused=false\"></div><div class=\"unicorn-suggestions\"><ul ng-if=\"state.open && results.length > 0\"><li class=\"unicorn-suggestions__headline\"><strong>{{results.length}} {{results.length > 1 ? translations.resultPlural || 'results' : translations.resultSingular || 'result'}}</strong></li><li ng-repeat=\"result in results\" class=\"unicorn-suggestions__result\"><button type=\"button\" class=\"unicorn-search__focusable\" ng-click=\"selectItem(result)\" ng-if=\"!isAlreadySelected(result)\" tabindex=\"0\" ng-keydown=\"handleKeyboardInput($event)\" onmouseover=\"this.focus()\" ng-focus=\"focussedResult=result\" ng-blur=\"focussedResult=undefined\" ng-class=\"{'active': (state.focused && getFirstSelectableItemFromResults() === result) || focussedResult === result}\">{{itemToString(result)}}</button> <span class=\"unicorn-suggestions__result--already-selected\" ng-if=\"isAlreadySelected(result)\">{{itemToString(result)}} {{translations.alreadySelected || 'is already selected'}}</span></li></ul></div></div><span class=\"input-group-btn\" ng-if=\"config.showClearBtn && !disabled\"><button type=\"button\" class=\"btn btn-danger unicorn-search__btn-append\" ng-click=\"clear()\"><i class=\"glyphicon glyphicon-trash\"></i></button></span></div><span class=\"help-block unicorn-hints\" ng-if=\"state.nothingFound || state.tooLessLetters || state.loadingError\"><span ng-if=\"state.nothingFound\" class=\"unicorn-hints__hint text-warning\">{{translations.nothingFound || 'Nothing found.'}}</span> <span ng-if=\"state.tooLessLetters\" class=\"unicorn-hints__hint text-muted\">{{translations.tooLessChars || 'Search term too short.'}}</span> <span ng-if=\"state.loadingError\" class=\"unicorn-hints__hint text-danger\">{{translations.errorFetchingResults || 'Could not fetch results.'}}</span></span>"
   );
 
 }]);
