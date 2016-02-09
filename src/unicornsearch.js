@@ -86,11 +86,9 @@
                     }
                 });
 
-                $scope.$watchCollection('ngModel.$modelValue', function(n) {
-                    //initiailize
-                    if (n !== $scope.selectedItems) {
-                        $scope.selectedItems = n;
-                    }
+                $scope.$watchCollection('selectedItems', function(n) {
+                    ngModel.$setViewValue(n);
+
                     //Validation
                     if ($scope.required) {
                         ngModel.$setValidity('required', ngModel.$modelValue.length !== 0);
