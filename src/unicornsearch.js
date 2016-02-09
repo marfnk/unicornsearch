@@ -96,12 +96,13 @@
                 $scope.$watchCollection('selectedItems', function(n) {
                     ngModel.$setViewValue(n);
 
+                    var length = $scope.selectedItems ? $scope.selectedItems.length : 0;
                     //Validation
                     if ($scope.required) {
-                        ngModel.$setValidity('required', ngModel.$modelValue.length !== 0);
+                        ngModel.$setValidity('required', length > 0);
                     }
                     //maximum
-                    $scope.state.maximumReached = $scope.selectedItems.length >= $scope.config.maxItems;
+                    $scope.state.maximumReached = length >= $scope.config.maxItems;
                     if ($scope.state.maximumReached) {
                         $scope.search = '';
                         resetResults();
