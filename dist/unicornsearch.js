@@ -37,7 +37,7 @@
                 $scope.itemToString = $scope.itemToString || function(item) {return item.label;};
                 //scope setup
                 $scope.ngModel = ngModel;
-                $scope.selectedItems = ngModel.$modelValue || [];
+                $scope.selectedItems = [];
                 $scope.selectItem = selectItem;
                 $scope.removeItem = removeItem;
                 $scope.calculateInputSize = calculateInputSize;
@@ -83,6 +83,13 @@
                                     });
                             }, $scope.config.delay);
                         }
+                    }
+                });
+
+                //set from outside
+                $scope.$watchCollection('ngModel.$modelValue', function(n) {
+                    if (n !== $scope.selectedItems) {
+                        $scope.selectedItems = n;
                     }
                 });
 
