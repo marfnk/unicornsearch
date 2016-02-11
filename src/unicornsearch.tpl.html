@@ -22,21 +22,20 @@
       </li>
     </ul>
 
-    <div class="unicorn-search__input" ng-if="!disabled">
+    <div class="unicorn-search__input" ng-hide="disabled">
       <i class="glyphicon"
          ng-class="{
             'glyphicon-refresh glyphicon-spin': state.loading,
             'glyphicon-search': !state.loading
           }"></i>
 
-      <!-- ngif creates a child scope - we have to set ng-model to $parent.search -->
       <input  tabindex="0"
               type="text"
               size="{{calculateInputSize()}}"
               class="unicorn-search__focusable"
               placeholder="{{state.maximumReached ? (translations.maximumReached || 'maximum reached'): ''}}"
               ng-click="openResults();"
-              ng-model="$parent.search"
+              ng-model="search"
               ng-keydown="handleKeyboardInput($event)"
               ng-focus="requestTouched();openResults();state.focused=true"
               ng-blur="state.focused=false" />

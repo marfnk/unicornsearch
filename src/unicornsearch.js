@@ -23,11 +23,8 @@
             },
             link: function($scope, element, attrs, ngModel) {
                 var currentTimeout;
-                var searchField;
+                var searchField; //use getter
                 var touchedPending = false;
-                $timeout(function() {
-                    searchField = element.find('input')[0];
-                });
 
                 //fallback config
                 $scope.config = $scope.config || {};
@@ -150,8 +147,8 @@
                         if (ngModel.$untouched) {
                             $window.addEventListener('focus', onClickOrFocusOutside, true);
                         }
-                        searchField.focus();
-                        searchField.select();
+                        getSearchFieldElement().focus();
+                        getSearchFieldElement().select();
                     }
                 }
 
@@ -217,6 +214,14 @@
                     return undefined;
                 }
 
+                function getSearchFieldElement() {
+                    if (!searchField) {
+                        searchField = element.find('input')[0];
+                    }
+
+                    return searchField;
+                }
+
                 function handleKeyboardInput(event) {
                     //keys: http://www.quirksmode.org/js/keys.html
                     var backspace = 8,
@@ -240,7 +245,7 @@
                         event.preventDefault();
 
                     } else if (pressed === backspace) {
-                        if (searchField.selectionStart === 0 && searchField.selectionEnd === 0) {
+                        if (getSearchFieldElement().selectionStart === 0 && getSearchFieldElement().selectionEnd === 0) {
                             $scope.selectedItems.pop();
                             event.preventDefault();
                         }
@@ -249,7 +254,7 @@
                         activateSearchField();
                         closeResults();
 
-                    } else if (pressed === enter && event.currentTarget === searchField) {
+                    } else if (pressed === enter && event.currentTarget === getSearchFieldElement()) {
                         event.preventDefault();
                         var firstSelectableItem = getFirstSelectableItemFromResults();
                         if ($scope.state.open === true && firstSelectableItem) {

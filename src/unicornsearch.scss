@@ -44,6 +44,9 @@ $btn-default-color: #333 !default;
       margin-left: 6px;
       line-height: $input-height-base - (2 * 3.75px);
       input {
+        &::-ms-clear {
+          display: none;
+        }
         min-width: 80px;
         border: none;
         &:focus {
