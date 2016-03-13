@@ -1,0 +1,30 @@
+{
+  "name": "unicornsearch",
+  "version": "0.0.0",
+  "main": [
+    "dist/unicornsearch.js",
+    "dist/unicornsearch.css"
+  ],
+  "authors": [
+    "Marius Fink <marius.fink@holisticon.de>"
+  ],
+  "description": "An AngularJS and Bootstrap-CSS multisearch with a minimal code.",
+  "keywords": [
+    "angular",
+    "search",
+    "multiselect",
+    "multisearch",
+    "select",
+    "bootstrap"
+  ],
+  "dependencies": {
+    "angular": "~1.3.0",
+    "angular-sanitize": "~1.3.0"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ]
+}

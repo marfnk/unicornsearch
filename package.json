@@ -1,0 +1,22 @@
+{
+  "name": "unicornsearch",
+  "version": "0.0.0",
+  "devDependencies": {
+    "bower": "1.6.5",
+    "grunt": "~0.4.5",
+    "grunt-angular-templates": "~0.5.5",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-compass": "~0.7.2",
+    "grunt-contrib-copy": "~0.4.1",
+    "load-grunt-tasks": "~0.4.0",
+    "grunt-release": "~0.13.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "description": "foobar",
+  "authors": [
+    "Marius Fink <github@mariusfink.org>"
+  ],
+  "license": "MIT"
+}
