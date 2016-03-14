@@ -278,7 +278,7 @@
     "      'input-group': config.showClearBtn && !disabled,\n" +
     "      'unicorn-search--disabled': disabled,\n" +
     "      'unicorn-search--active': state.focused || (state.open && results.length > 0)\n" +
-    "    }\"><div class=\"unicorn-search__inner form-control\" ng-click=\"activateSearchField()\" ng-class=\"{'unicorn-search__inner--focused': state.focused,\n" +
+    "    }\"><div class=\"unicorn-search__inner form-control\" ng-class=\"{'unicorn-search__inner--focused': state.focused,\n" +
     "                   'unicorn-search__inner--open': (state.open && results.length > 0)}\"><ul class=\"unicorn-chips\"><li ng-repeat=\"chip in selectedItems\" class=\"unicorn-chips__chip\">{{itemToString(chip)}} <button type=\"button\" ng-click=\"removeItem(chip)\" tabindex=\"-1\" ng-if=\"!disabled\">&times;</button></li></ul><div class=\"unicorn-search__input\" ng-hide=\"disabled\"><i class=\"glyphicon\" ng-class=\"{\n" +
     "            'glyphicon-refresh glyphicon-spin': state.loading,\n" +
     "            'glyphicon-search': !state.loading\n" +
