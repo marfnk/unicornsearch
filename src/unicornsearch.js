@@ -152,7 +152,7 @@
                             $window.addEventListener('focus', onClickOrFocusOutside, true);
                         }
                         getSearchFieldElement().focus();
-                        getSearchFieldElement().select();
+                        //getSearchFieldElement().select();
                     }
                 }
 

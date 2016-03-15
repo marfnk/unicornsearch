@@ -6,6 +6,7 @@
     }">
 
   <div  class="unicorn-search__inner form-control"
+        ng-click="activateSearchField()"
         ng-class="{'unicorn-search__inner--focused': state.focused,
                    'unicorn-search__inner--open': (state.open && results.length > 0)}">
 
@@ -37,7 +38,8 @@
               ng-model="search"
               ng-keydown="handleKeyboardInput($event)"
               ng-focus="requestTouched();openResults();state.focused=true"
-              ng-blur="state.focused=false" />
+              ng-blur="state.focused=false"
+               />
     </div>
 
     <div class="unicorn-suggestions">
