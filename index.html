@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Unicornsearch by marfnk</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Unicornsearch</h1>
+      <h2 class="project-tagline">A Bootstrap 3 and AngularJS multi-search component with focus on usability, minimal code and configurability.</h2>
+      <a href="https://github.com/marfnk/unicornsearch" class="btn">View on GitHub</a>
+      <a href="https://github.com/marfnk/unicornsearch/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/marfnk/unicornsearch/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="unicornsearch" class="anchor" href="#unicornsearch" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Unicornsearch</h1>
+
+<p>so pure but still WIP</p>
+
+<p><a href="https://plnkr.co/edit/8SlSxsnbFx6QMxRvbzJY?p=preview">Example on Plunker</a></p>
+
+<h2>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description</h2>
+
+<p>This is yet another AngularJS select2-style component. But it is minimal and super clean, focusses on usability and only depends on Angular.
+It has only ca. 0,5% LOC of select2.</p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>keyboard support (tab, backspace, arrow keys, enter, ESC)</li>
+<li>uses <code>ng-model</code> like a common input element</li>
+<li>validates the ng-model and sets the <code>$touched</code> attribute</li>
+<li>you inject your own search result loading method</li>
+<li>optional "clear"-btn</li>
+<li>disabled state just like in common input elements</li>
+<li>configurable (minium chars for search, typing delay, maximum entries)</li>
+<li>still focusable when maximum elements selected</li>
+<li>last but not least: beautiful like a unicorn 🦄
+ 
+## Setup</li>
+</ul>
+
+<h3>
+<a id="load-dependency" class="anchor" href="#load-dependency" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>load dependency</h3>
+
+<h4>
+<a id="using-bower" class="anchor" href="#using-bower" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>using bower</h4>
+
+<pre><code>'unicornsearch': 'https://github.com/marfnk/unicornsearch.git'
+</code></pre>
+
+<h4>
+<a id="manually" class="anchor" href="#manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>manually</h4>
+
+<pre><code>&lt;script type="text/javascript" src="path/to/unicornsearch/dist/unicornsearch.min.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="path/to/unicornsearch/dist/unicornsearch.css" /&gt;
+</code></pre>
+
+<h3>
+<a id="inject-angularjs-dependency" class="anchor" href="#inject-angularjs-dependency" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inject AngularJS dependency</h3>
+
+<pre><code>angular
+    .module('myExampleApp',
+        ['unicornsearchModule'], //inject unicornsearch module
+        ... //more dependencies
+    );
+</code></pre>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a id="html" class="anchor" href="#html" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>HTML</h3>
+
+<pre><code>&lt;form name="yourForm"&gt;
+
+    &lt;unicorn-search
+      ng-model="model"
+      name="q_id_foo"
+      load="load"
+      item-to-key="itemToKey"
+      item-to-string="itemToString"
+      config="config"
+      translations="translations"
+      required
+      ng-disabled="disabled"&gt;&lt;/unicorn-search&gt;
+&lt;/form&gt;
+</code></pre>
+
+<h3>
+<a id="js-configuration" class="anchor" href="#js-configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>JS (configuration)</h3>
+
+<pre><code>//preselected items
+$scope.model = [
+  {id: 42, label: 'unicorn'}
+];
+
+//unicornsearch config
+$scope.config = {
+  minChars: 4,          //mininum characters before search is triggered
+  delay: 300,           //duration in ms between the 'keyup' event and the search
+  maxItems: 5,          //maximum number of selected items
+  showClearBtn: false,  //whether the appended clear button should be shown
+  clearOnAdd: false     //whether the search input and results should be cleared when a search result is added
+}
+
+//i18n
+$scope.translations = {
+  maximumReached: 'maximale Anzahl erreicht',
+  nothingFound: 'Nichts gefunden',
+  tooLessChars: 'Suchanfrage zu kurz',
+  errorFetchingResults: 'Konnte Ergebnisse nicht laden.',
+  resultSingular: 'Ergebnis',
+  resultPlural: 'Ergebnisse',
+  alreadySelected: '(bereits ausgewählt)'
+}
+
+//comparable property of an item (e.g. item.id), compares by id if undefined
+$scope.itemToKey = function(item) {
+  return item.id + item.label;
+}
+
+//function that transforms an item into a string for the chips, uses item.label if undefined
+$scope.itemToString = function(item) {
+  return item.label + " :) ";
+}
+
+//loading the results - has to return a $q (promise)
+$scope.load = function(searchTerm) {
+     return $q(function(resolve, reject) {
+        var results = loadYourResultsFromSomewhere(searchTerm);
+        resolve(results);
+        //or if error: reject(errorMsg);
+     }
+}
+</code></pre>
+
+<h3>
+<a id="sass-styling" class="anchor" href="#sass-styling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SASS (styling)</h3>
+
+<pre><code>//set your bootstrap variables
+@import "path/to/your/bootstrap-sass-official";
+@import "path/to/unicornsearch/src/unicornsearch.scss";
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/marfnk/unicornsearch">Unicornsearch</a> is maintained by <a href="https://github.com/marfnk">marfnk</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
