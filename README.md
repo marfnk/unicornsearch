@@ -17,7 +17,7 @@ It has only ca. 0,5% LOC of select2.
 - configurable (minium chars for search, typing delay, maximum entries)
 - still focusable when maximum elements selected
 - last but not least: beautiful like a unicorn 🦄
-
+ 
 ## Setup
 
 ### load dependency

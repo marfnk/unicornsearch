@@ -6,7 +6,7 @@
     "dist/unicornsearch.css"
   ],
   "authors": [
-    "Marius Fink <marius.fink@holisticon.de>"
+    "Marius Fink <github@mariusfink.org>"
   ],
   "description": "An AngularJS and Bootstrap-CSS multisearch with a minimal code.",
   "keywords": [
