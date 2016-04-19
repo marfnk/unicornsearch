@@ -1,6 +1,6 @@
 {
   "name": "unicornsearch",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "main": [
     "dist/unicornsearch.js",
     "dist/unicornsearch.css"
