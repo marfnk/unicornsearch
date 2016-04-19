@@ -36,7 +36,8 @@
               class="unicorn-search__focusable"
               placeholder="{{state.maximumReached ? (translations.maximumReached || 'maximum reached'): ''}}"
               ng-model="search"
-            
+              ng-keydown="handleKeyboardInput($event)"
+              ng-focus="requestTouched();openResults();state.focused=true"
               ng-blur="state.focused=false"
                />
     </div>
