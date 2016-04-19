@@ -34,7 +34,6 @@
               size="{{calculateInputSize()}}"
               class="unicorn-search__focusable"
               placeholder="{{state.maximumReached ? (translations.maximumReached || 'maximum reached'): ''}}"
-              ng-click="openResults();"
               ng-model="search"
               ng-keydown="handleKeyboardInput($event)"
               ng-focus="requestTouched();openResults();state.focused=true"
