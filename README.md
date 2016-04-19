@@ -1,7 +1,7 @@
 # Unicornsearch
 so pure but still WIP
 
-[Example on Plunker](https://plnkr.co/edit/8SlSxsnbFx6QMxRvbzJY?p=preview)
+[Example on Plunker](https://embed.plnkr.co/8SlSxsnbFx6QMxRvbzJY/)
 
 ## Description
 This is yet another AngularJS select2-style component. But it is minimal and super clean, focusses on usability and only depends on Angular.
@@ -22,7 +22,7 @@ It has only ca. 0,5% LOC of select2.
 
 ### load dependency
 #### using bower
-    
+
     'unicornsearch': 'https://github.com/marfnk/unicornsearch.git'
 
 #### manually
