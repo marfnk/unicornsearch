@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- vendor -->
+    <link rel="stylesheet" href="vendor/bootstrap-3.3.6.css" />
+    <script src="vendor/angular-1.3.15.js"></script>
+    <script src="vendor/angular-sanitize-1.4.8.js"></script>
+    <script src="vendor/angular-touch.js"></script>
+
+    <!-- unicorn search dist -->
+    <link rel="stylesheet" href="../dist/unicornsearch.css" />
+    <script src="../dist/unicornsearch.js"></script>
+
+    <!-- example script -->
+    <script src="exampleCtrl.js"></script>
+    <style>
+      body {
+        padding: 50px;
+      }
+    </style>
+  </head>
+
+  <body ng-app="myExampleApp">
+
+    <h1>Unicornsearch <small>&ndash; so pure</small></h1>
+    <div ng-controller="exampleCtrl">
+      <form name="myForm">
+        <input type="text" placeholder="example line before" class="form-control"/>
+
+        <br/>
+
+        <unicorn-search
+          ng-model="model"
+          name="q_id_foo"
+          load="load"
+          item-to-key="itemToKey"
+          item-to-string="itemToString"
+          config="config"
+          translations="translations"
+          required
+          ng-disabled="disabled"></unicorn-search>
+
+          <br/>
+
+          <div class="input-group">
+            <input type="text" disabled class="form-control" placeholder="another line">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">button</button>
+            </span>
+          </div>
+      </form>
+
+      <hr>
+
+      <div class="well" style="position:relative;">
+        <h5>model</h5>
+        <ul>
+          <li ng-repeat="item in model"><code>{{item}}</code></li>
+        </ul>
+
+        <h5>form object</h5>
+        <ul>
+          <li>touched: <code>{{myForm.q_id_foo.$touched}}</code></li>
+          <li>dirty: <code>{{myForm.q_id_foo.$dirty}}</code></li>
+          <li>pristine: <code>{{myForm.q_id_foo.$pristine}}</code></li>
+          <li>valid: <code>{{myForm.q_id_foo.$valid}}</code></li>
+        </ul>
+
+        <h5>Validations</h5>
+        <span class="text-danger">
+          <ul>
+            <li ng-repeat="(key, invalid) in myForm.q_id_foo.$error">Error! <code>{{key}}</code></li>
+          </ul>
+        </span>
+
+        <h5>Keyboard</h5>
+        <ul>
+          <li><kbd>Backspace</kbd> to delete last item</li>
+          <li><kbd><i class="glyphicon glyphicon-arrow-down"></i></kbd>, <kbd><i class="glyphicon glyphicon-arrow-up"></i></kbd> to select results</li>
+          <li><kbd>Enter</kbd> to add result</li>
+          <li><kbd>ESC</kbd> to close results</li>
+          <li><kbd>ENTER</kbd> to add first item</li>
+        </ul>
+
+        <h5>Demo Functions</h5>
+        <ul>
+          <li><button type="button" ng-click="addItemFromOutside()" class="btn btn-default btn-xs">add item</button></li>
+          <li><input type="checkbox" ng-model="noNetwork"/> no network</li>
+          <li><input type="checkbox" ng-model="config.showClearBtn"/> show <i class="glyphicon glyphicon-trash"></i>-button</li>
+          <li><input type="checkbox" ng-model="disabled"/> disable</li>
+          <li><input type="number" ng-model="config.minChars"/> minimum chars</li>
+          <li><input type="number" ng-model="config.delay"/> typing delay in ms</li>
+          <li><input type="number" ng-model="config.maxItems"/> maximum entries</li>
+        </ul>
+      </div>
+
+    </div>
+  </body>
+
+</html>
