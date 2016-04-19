@@ -26,7 +26,8 @@
       <i class="glyphicon"
          ng-class="{
             'glyphicon-refresh glyphicon-spin': state.loading,
-            'glyphicon-search': !state.loading
+            'glyphicon-search': !state.loading  && !state.loadingError,
+            'glyphicon-exclamation-sign': !state.loading && state.loadingError
           }"></i>
 
       <input  tabindex="0"
@@ -35,8 +36,7 @@
               class="unicorn-search__focusable"
               placeholder="{{state.maximumReached ? (translations.maximumReached || 'maximum reached'): ''}}"
               ng-model="search"
-              ng-keydown="handleKeyboardInput($event)"
-              ng-focus="requestTouched();openResults();state.focused=true"
+            
               ng-blur="state.focused=false"
                />
     </div>

@@ -25,7 +25,7 @@
                 var currentTimeout;
                 var searchField; //use getter
                 var touchedPending = false;
-                
+
                 //fallback config
                 $scope.config = $scope.config || {};
                 $scope.config.delay = $scope.config.delay || 400;
@@ -74,10 +74,10 @@
                             currentTimeout = $timeout(function() {
                                 $scope.state.loading = true;
                                 $scope.load(searchTerm)
-                                    .then(addSearchResults, loadingError)
+                                    .then(addSearchResults)
                                     .then(function() {
                                         $scope.state.loading = false;
-                                    });
+                                    }).catch(loadingError);
                             }, $scope.config.delay);
                         }
                     }
@@ -171,8 +171,8 @@
                 function resetResults() {
                     $scope.results = [];
                     closeResults();
-                    $scope.nothingFound = false;
-                    $scope.loadingError = false;
+                    $scope.state.nothingFound = false;
+                    $scope.state.loadingError = false;
                 }
 
                 function clear() {
@@ -217,12 +217,12 @@
                     }
                     return undefined;
                 }
-                
+
                 function getSearchFieldElement() {
                   if (!searchField) {
                     searchField = element.find('input')[0];
                   }
-                  
+
                   return searchField;
                 }
 
