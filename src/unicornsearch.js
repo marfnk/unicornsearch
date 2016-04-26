@@ -4,7 +4,22 @@
 
     angular
         .module('unicornsearchModule')
+        .directive('focusOnMouseOver', FocusOnMouseOverDirective);
+
+    angular
+        .module('unicornsearchModule')
         .directive('unicornSearch', SearchDirective);
+
+    function FocusOnMouseOverDirective() {
+        return {
+            restrict: 'A',
+            link: function(scope, element) {
+                element.on("mouseover", function() {
+                    this.focus();
+                });
+            }
+        }
+    }
 
     function SearchDirective($timeout, $window) {
 
