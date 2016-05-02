@@ -58,7 +58,7 @@
                   ng-if="!isAlreadySelected(result)"
                   tabindex="0"
                   ng-keydown="handleKeyboardInput($event)"
-                  onMouseOver="this.focus()"
+                  ng-mouseover="focusResult($event)"
                   ng-focus="focussedResult=result"
                   ng-blur="focussedResult=undefined"
                   ng-class="{'active': (state.focused && getFirstSelectableItemFromResults() === result) || focussedResult === result}">

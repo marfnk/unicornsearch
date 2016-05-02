@@ -42,6 +42,7 @@
                 $scope.activateSearchField = activateSearchField;
                 $scope.closeResults = closeResults;
                 $scope.openResults = openResults;
+                $scope.focusResult = focusResult;
                 $scope.clear = clear;
                 $scope.results = [];
                 $scope.requestTouched = requestTouched;
@@ -224,6 +225,12 @@
                   }
 
                   return searchField;
+                }
+
+                function focusResult($event) {
+                  if ($event.currentTarget.tagName === "BUTTON") {
+                    $event.currentTarget.focus();
+                  }
                 }
 
                 function handleKeyboardInput(event) {
