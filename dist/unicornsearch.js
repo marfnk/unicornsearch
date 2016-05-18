@@ -16,7 +16,6 @@
                 load: '=', //function that returns a promise ($q) with the results (required)
                 translations: '=', //translation object (optional)
                 config: '=', //configuration object (options)
-                required: '@', //wheather this component is required false when missing
                 disabled: '@', //wheather this component should be disabled false when missing
                 itemToKey: '=', //function to convert items to keys for comparision (optional)
                 itemToString: '=' // function to convert items into strings for presentation (optional)
@@ -96,7 +95,7 @@
 
                     var length = $scope.selectedItems ? $scope.selectedItems.length : 0;
                     //Validation
-                    if ($scope.required) {
+                    if (attrs.required) {
                         ngModel.$setValidity('required', length > 0);
                     }
                     //maximum
